@@ -1,19 +1,19 @@
-Using conda-forge to manage your CI
-===================================
+Using conda-smithy to manage your CI
+====================================
 Conda-forge, and specifically ``conda-smithy`` contains a lot of
 tools for building and deploying continuous integration (CI)
-infrastructure on a variety of different platforms and architectures!
+infrastructure on a variety of different platforms and architectures.
 Wouldn't it be nice if you could reuse all of this hard work, so
-you don't have to write or manage your own CI configurations?!
+you don't have to write or manage your own CI configurations?
 
 By adding a ``recipe/`` directory to your repository, the conda-smithy
-command ``ci-skeleton`` let's you hook into well-tested and robust
+command ``ci-skeleton`` lets you hook into well-tested and robust
 CI infrastructure. Using the conda-smithy ``rerender`` command, you
-can then keep your repository up-to-date with any needed changes!
+can then keep your repository up-to-date with any needed changes.
 
 Getting Started
 ---------------
-The ``ci-skeleton`` command helps get you started by preparing a repository
+The ``ci-skeleton`` command helps you get started by preparing a repository
 to have the proper structure such that the ``rerender`` command will correctly
 add the CI configurations. Let's see an example!
 
@@ -167,7 +167,7 @@ Just run the following commands:
 
 3. Register with the CI providers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-This is important!  It you haven't done so already, you'll need to go
+This is important!  If you haven't done so already, you'll need to go
 to the CI providers (Travis, Circle, Azure, etc.) and enable CI
 to for your repository. Each CI provider that you use will have
 documentation on how to get set up with them.

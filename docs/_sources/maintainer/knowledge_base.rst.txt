@@ -1,4 +1,4 @@
-Knowledge base
+Knowledge Base
 **************
 
 Using CMake
@@ -33,7 +33,7 @@ Some optional, but useful CMake options:
       into lib64 or similar but on conda-forge we keep shared libraries in simply lib.
     - ``-DBUILD_SHARED_LIBS=ON`` Instruct CMake to build shared libraries instead of static ones.
 
-Here are some basic commands to get you started. These are dependent on your source
+Here are some basic commands for you to get started. These are dependent on your source
 code layout and aren't intended to be used "as is".
 
 **CMake lines for build.sh (macOS/Linux):**
@@ -88,7 +88,7 @@ Particularities on Windows
 ==========================
 
 This document presents conda-forge and conda-build information and examples
-when building on Windows.
+while building on Windows.
 
 
 Local testing
@@ -98,9 +98,9 @@ The first thing that you should know is that you can locally test Windows
 builds of your packages even if you don’t own a Windows machine. Microsoft
 makes available free, official Windows virtual machines (VMs) `at this website
 <https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/>`_. If you
-are unfamiliar with VM systems or have trouble installing Microsoft’s, please
-use a general web search to investigate — while these topics are beyond the
-scope of this documentation, there is ample discussion of them on the broader
+are unfamiliar with VM systems or have trouble installing Microsoft’s VMs, please
+use a general web search to explore — while these topics are beyond the
+scope of this documentation, there are ample discussions on them on the broader
 Internet.
 
 In order to compile native code (C, C++, etc.) on Windows, you will need to
@@ -116,17 +116,15 @@ versions are:
 While you can obtain these tools by installing the right version of the full
 `Visual Studio <https://visualstudio.microsoft.com/>`_ development
 environment, you can save a lot of time and bandwidth by installing standalone
-“build tools” packages. The links are:
+“build tools” packages. The links are as follows:
 
 * For Python 2.7: `Microsoft Visual C++ Compiler for Python 2.7
   <https://www.microsoft.com/download/details.aspx?id=44266>`_.
 * For Python 3.5–3.7: `Microsoft Build Tools for Visual Studio 2017
   <https://www.visualstudio.com/downloads/#build-tools-for-visual-studio-2017>`_.
 
-Please see `the Python wiki page on Windows compilers
-<https://wiki.python.org/moin/WindowsCompilers>`_ if you need more
-information.
-
+If you need more information. Please refer `the Python wiki page on Windows compilers
+<https://wiki.python.org/moin/WindowsCompilers>`_.
 
 Simple CMake-Based ``bld.bat``
 ------------------------------
@@ -163,7 +161,7 @@ build for such projects.
 The following feedstocks are examples of this build structure deployed:
 
 * `libpng <https://github.com/conda-forge/libpng-feedstock/blob/master/recipe/bld.bat>`_
-* `pugixml <https://github.com/conda-forge/pugixml-feedstock/blob/master/recipe/bld.bat>`_
+* `Pugixml <https://github.com/conda-forge/pugixml-feedstock/blob/master/recipe/bld.bat>`_
 
 
 Building for different VC versions
@@ -191,8 +189,37 @@ To skip building with a particular ``vc`` version, add a skip statement.
     requirements:
       build:
         - {{ compiler('cxx') }}
+        
+Using vs2019
+-------------
+
+To use ``vs2019`` make the following changes: 
+
+In conda_build_config.yaml file:    
+
+.. code-block:: yaml
+
+    c_compiler:                    
+    - vs2019                       
+    cxx_compiler:                  
+    - vs2019                       
 
 
+In conda-forge.yml file:
+
+.. code-block:: yaml
+
+    azure:
+      settings_win:
+          pool:
+              vmImage: windows-2019
+     
+      
+
+For example see the changes made in the ``conda_build_config.yaml`` and ``conda-forge.yml`` files in `this
+<https://github.com/conda-forge/libignition-physics-feedstock/commit/c586d765a2f5fd0ecf6da43c53315c898c9bf6bd>`_ PR.
+
+After making these changes don't forget to rerender with ``conda-smithy`` (to rerender manually use ``conda smithy rerender`` from the command line).
 
 Special Dependencies and Packages
 =================================
@@ -206,9 +233,9 @@ Compilers are dependencies with a special syntax and are always added to ``requi
 
 There are currently three supported compilers:
 
- - c
+ - C
  - cxx
- - fortran
+ - Fortran
 
 A package that needs all three compilers would define
 
@@ -223,8 +250,8 @@ A package that needs all three compilers would define
 .. note::
 
   Appropriate compiler runtime packages will be automatically added to the package's runtime requirements and therefore
-  there's no need to specify ``libgcc`` or ``libgfortran``. There is additional information about how conda-build 3 treats
-  compilers in the `conda docs <https://docs.conda.io/projects/conda-build/en/latest/source/compiler-tools.html>`_.
+  there's no need to specify ``libgcc`` or ``libgfortran``. There are additional informations about how conda-build 3 treats
+  compilers in the `conda docs <https://docs.conda.io/projects/conda-build/en/latest/resources/compiler-tools.html>`_.
 
 .. _cdt_packages:
 
@@ -232,10 +259,13 @@ Core Dependency Tree Packages (CDTs)
 ------------------------------------
 
 Dependencies outside of the ``conda-forge`` channel should be avoided (see :ref:`no_external_deps`).
-However, there are a few exceptions: some dependencies are so close to the system
-that they are not packaged with ``conda-forge``. These dependencies have to be satisfied with
-*Core Dependency Tree* (CDT) packages. A CDT package consists of repackaged CentOS binaries from the
-appropriate version, either 6 or 7 depending on user choice and platform. We manage the build of CDT
+However, there are a few exceptions: 
+
+Some dependencies are so close to the system that they are not packaged with ``conda-forge``. 
+These dependencies have to be satisfied with *Core Dependency Tree* (CDT) packages. 
+
+A CDT package consists of repackaged CentOS binaries from the appropriate version, 
+either 6 or 7 depending on user choice and platform. We manage the build of CDT
 packages using a centralized repo, `conda-forge/cdt-builds <https://github.com/conda-forge/cdt-builds>`_,
 as opposed to generating feedstocks for them. (Note that historically we did use feedstocks but this
 practice has been deprecated.) To add a new CDT, make a PR on the
@@ -467,7 +497,7 @@ shouldn't be, because some packages built with mpi don't preclude other packages
 from using the no-mpi variant of the library (e.g. for a long time, fenics used mpi with no-mpi hdf5 since there was no
 parallel hdf5 yet. This works fine, though some features may not be available).
 
-Typically, if there is a preference it will be for the serial build, such that installers/requirers of the package 
+Typically, if there is a preference it will be for the serial build, such that installers/requirers of the package
 only get the mpi build if explicitly requested. We use a higher build number for the ``nompi`` variant in this case.
 
 Here is an example build section:
@@ -846,6 +876,33 @@ To use this package in a build, put it in the host environment like so
         - pybind11-abi
 
 
+.. _knowledge:empty:
+
+Empty Python packages
+----------
+For some features introduced in later Python versions, the Python community creates backports, which makes these
+features available for earlier versions of Python as well.
+One example here is `dataclasses <https://www.python.org/dev/peps/pep-0557/>`__ which was introduced with
+Python3.7 but is available as a `backport <https://github.com/ericvsmith/dataclasses>`__ for Python3.6 too.
+Therefore, most upstream packages make those backports only mandatory for specific versions of Python and exclude them otherwise.
+
+Implementing this restriction in conda-forge is currently only possible through the use of ``skips``
+which restricts the corresponding conda-forge recipes from becoming ``noarch``.
+
+Therefore, some conda-forge recipes only create an actual package on specific Python versions and are otherwise an
+empty placeholder. This allows them to be safely installed under all Python versions and makes using ``skips`` unnecessary.
+
+Currently available packages:
+
++-------------+-------------------+--------------+
+| Name        | Available on:     | Empty on:    |
++=============+===================+==============+
+| dataclasses | python >=3.6,<3.7 | python >=3.7 |
++-------------+-------------------+--------------+
+| typing      |                   | python >=3   |
++-------------+-------------------+--------------+
+
+
 Noarch builds
 =============
 
@@ -916,7 +973,7 @@ Build matrices
 
 Currently, ``python, vc, r-base`` will create a matrix of jobs for each supported version. If ``python`` is only a
 build dependency and not a runtime dependency (eg: build script of the package is written in Python, but the
-package is not dependent on python), use ``build`` section
+package is not dependent on Python), use ``build`` section
 
 Following implies that ``python`` is only a build dependency and no Python matrix will be created.
 
@@ -931,7 +988,7 @@ Following implies that ``python`` is only a build dependency and no Python matri
 Note that ``host`` should be non-empty or ``compiler`` jinja syntax used or ``build/merge_build_host`` set to
 True for the ``build`` section to be treated as different from ``host``.
 
-Following implies that ``python`` is a runtime dependency and a Python matrix for each supported python version will be created.
+Following implies that ``python`` is a runtime dependency and a Python matrix for each supported Python version will be created.
 
 .. code-block:: yaml
 
@@ -1049,6 +1106,51 @@ To skip the pypy builds, do the following,
    build:
      skip: True         # [python_impl == 'pypy']
 
+
+Using setuptools_scm
+====================
+
+The Python module `setuptools_scm <https://github.com/pypa/setuptools_scm>`_
+can be used to manage a package's version automatically from metadata, such as git tags.
+The package's version string is thus not specified anywhere in the package,
+but encoded in it at install-time.
+
+For conda-build this means that ``setuptools_scm`` must be included as a ``host`` dependency.
+Additionally, some attention because the metadata is often not available in the sources.
+There are two options for how to proceed:
+
+*   For Python package also available on PyPI:
+    Use the PyPi tarball as a source, as it will have the metadata encoded
+    (in such a way that ``setuptools_scm`` knows how to find it).
+
+*   Specify the environment variable ``SETUPTOOLS_SCM_PRETEND_VERSION`` with the version string.
+    If specified this environment variable is the principle source for ``setuptools_scm``.
+    There are two ways how to do this:
+
+    -   If you are using build scripts, in ``build.sh`` specify:
+
+        .. code-block:: bash
+
+            export SETUPTOOLS_SCM_PRETEND_VERSION="$PKG_VERSION"
+
+        and in ``bld.bat`` specify:
+
+        .. code-block:: bash
+
+            set SETUPTOOLS_SCM_PRETEND_VERSION=%PKG_VERSION%
+
+        Whereby you use that ``PKG_VERSION`` has been set with the version string,
+        see `Environment variables <https://docs.conda.io/projects/conda-build/en/latest/user-guide/environment-variables.html#env-vars>`_.
+
+    -   Otherwise, if you are directly building from ``meta.yaml``, use for example:
+
+        .. code-block:: yaml
+
+            build:
+              # [...]
+              script_env:
+                - SETUPTOOLS_SCM_PRETEND_VERSION={{version}}
+              script: "{{ PYTHON }} -m pip install . -vv"
 
 .. _centos7:
 
@@ -1314,7 +1416,7 @@ Pre-release version sorting
 ---------------------------
 
 If you wish to add numbers to your ``dev`` or ``rc`` build, you should follow the
-`guidelines <http://conda.pydata.org/docs/spec.html#build-version-spec>`_ put
+`guidelines <https://docs.conda.io/projects/conda/en/latest/user-guide/concepts/pkg-specs.html#version-ordering>`_ put
 forth by Continuum regarding version sorting in ``conda``. Also see the `source
 code for conda
 4.2.13 <https://github.com/conda/conda/blob/4.2.13/conda/version.py#L93-L119>`_.
